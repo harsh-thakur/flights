@@ -22,5 +22,5 @@ var flightSchema = new mongoose.Schema({
         }]
  }, { versionKey: false });
 
-var flight = mongoose.model('flight', flightSchema);
+var flight = mongoose.model('flightibibo', flightSchema);
 module.exports = flight;
