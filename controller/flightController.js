@@ -8,7 +8,7 @@ let CronJob = require("cron").CronJob;
 const moment = require("moment");
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "59 06 15 * * 1-5",
+  cronTime: "59 * 15 * * 1-5",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
