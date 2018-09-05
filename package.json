@@ -1,0 +1,27 @@
+{
+  "name": "flightcrawler-be",
+  "version": "1.0.0",
+  "description": "A crawler which will crawl multiple travel websites and store data of flights, fare information and breakup of fare. Crawler should on click of a button go to predefined sites and search for flight information for predefined destinations and Store data in the format provided.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "cron": "^1.4.1",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "mongoose": "^5.1.5",
+    "nodemon": "^1.17.5",
+    "path": "^0.12.7",
+    "request": "^2.87.0",
+    "require": "^2.4.20",
+    "router": "^1.3.2"
+  }
+}
