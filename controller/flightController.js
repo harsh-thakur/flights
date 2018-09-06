@@ -6,20 +6,27 @@ var Promise = require("bluebird");
 const async = require('async');
 let CronJob = require("cron").CronJob;
 const moment = require("moment");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API);
+sgMail.setSubstitutionWrappers("{{", "}}");
+
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "59 * 15 * * 1-5",
+  cronTime: "00 30 09 * * 1-7",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
     // }
     crawl();
+    // sendMail();
 
   },
   start: false,
   timeZone: "Asia/Kolkata"
 });
 notifier.start();
+
+
 
 async function crawl() {
   console.log("heloo cron activated");
@@ -72,7 +79,7 @@ async function check(element,src,des){
         method: 'GET',
         uri: ibiboApi
       }, async function (error, response, body) {
-        console.log('res codesss',response.statusCode)
+        // console.log('res codesss',response.statusCode)
         if (!error && response.statusCode == 200) {
           body = JSON.parse(body);    
           status = 200
@@ -116,3 +123,19 @@ async function check(element,src,des){
         }
       })
 }
+
+
+// function sendMail() {
+//   console.log("come here to send mail");
+  
+//   let msg = {
+//     to:'sonia.dua@venturepact.com',
+//     from:'hacked@hack.com',
+//     subject:'Hacked',
+//     text: 'Your acoount has been hacked!'
+//   }
+//   sgMail.send(msg).then(()=>{
+//     console.log("kaam ho gya");
+    
+//   })
+//   }
