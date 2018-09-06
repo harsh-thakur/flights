@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "00 40 09 * * 0-6",
+  cronTime: "00 05 10 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
@@ -103,6 +103,7 @@ async function check(element,src,des){
             sourceCode: element.sourceCode,
             destinationCode: element.destinationCode,
             dateOfDeparture: Date.now(),
+            slug:element.sourceName.toLowerCase()+'-'+element.destinationName.toLowerCase(),
             details: detailArr
           }
           let obj = await new flight(clubbed);

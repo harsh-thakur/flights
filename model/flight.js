@@ -11,6 +11,7 @@ var flightSchema = new mongoose.Schema({
         sourceCode:String,
         destinationCode: String,
         dateOfDeparture:Date,
+        slug:String,
         details :[{
            airline_name:String,
             flight_code:String,
