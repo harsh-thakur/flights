@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "55 26 09 * * 0-6",
+  cronTime: "55 * 09 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
