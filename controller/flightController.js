@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "00 05 10 * * 0-6",
+  cronTime: "55 26 09 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
@@ -33,28 +33,193 @@ async function crawl() {
   let pairOfOriginDestination = [
     {
       sourceCode: 'DEL',
+      destinationCode: 'BOM',
+      sourceName: 'New Delhi',
+      destinationName: 'Mumbai'
+    },
+    {
+      sourceCode: 'DEL',
       destinationCode: 'BLR',
       sourceName: 'New Delhi',
       destinationName: 'Bengaluru'
     },
     {
-      sourceCode: 'BLR',
-      destinationCode: 'DEL',
-      sourceName: 'Bengaluru',
-      destinationName: 'New Delhi'
+      sourceCode: 'DEL',
+      destinationCode: 'HYD',
+      sourceName: 'New Delhi',
+      destinationName: 'Hyderabad'
     },
     {
       sourceCode: 'DEL',
-      destinationCode: 'GOI',
+      destinationCode: 'IXC',
       sourceName: 'New Delhi',
-      destinationName: 'Goa'
+      destinationName: 'Chandigarh'
     },
     {
-      sourceCode: 'GOI',
+      sourceCode: 'DEL',
+      destinationCode: 'MAA',
+      sourceName: 'New Delhi',
+      destinationName: 'Chennai'
+    },
+
+    // 1st set
+    {
+      sourceCode: 'BOM',
       destinationCode: 'DEL',
-      sourceName: 'Goa',
+      sourceName: 'Mumbai',
       destinationName: 'New Delhi'
     },
+    {
+      sourceCode: 'BOM',
+      destinationCode: 'BLR',
+      sourceName: 'Mumbai',
+      destinationName: 'Banglore'
+    },
+    {
+      sourceCode: 'BOM',
+      destinationCode: 'HYD',
+      sourceName: 'Mumbai',
+      destinationName: 'Hyderabad'
+    },
+    {
+      sourceCode: 'BOM',
+      destinationCode: 'IXC',
+      sourceName: 'Mumbai',
+      destinationName: 'Chandigarh'
+    },
+    {
+      sourceCode: 'BOM',
+      destinationCode: 'MAA',
+      sourceName: 'Mumbai',
+      destinationName: 'Chennai'
+    },
+    // 2nd set 
+    {
+      sourceCode: 'BLR',
+      destinationCode: 'DEL',
+      sourceName: 'Bangalore',
+      destinationName: 'Delhi'
+    },
+    {
+      sourceCode: 'BLR',
+      destinationCode: 'BOM',
+      sourceName: 'Bangalore',
+      destinationName: 'Mumbai'
+    },
+    {
+      sourceCode: 'BLR',
+      destinationCode: 'HYD',
+      sourceName: 'Bangalore',
+      destinationName: 'Hyderabad'
+    },
+    {
+      sourceCode: 'BLR',
+      destinationCode: 'IXC',
+      sourceName: 'Bangalore',
+      destinationName: 'Chandigarh'
+    },
+    {
+      sourceCode: 'BLR',
+      destinationCode: 'MAA',
+      sourceName: 'Bangalore',
+      destinationName: 'Chennai'
+    },
+    // 3rd set 
+    {
+      sourceCode: 'HYD',
+      destinationCode: 'DEL',
+      sourceName: 'Hyderabad',
+      destinationName: 'Delhi'
+    },   
+    {
+      sourceCode: 'HYD',
+      destinationCode: 'BOM',
+      sourceName: 'Hyderabad',
+      destinationName: 'Mumbai'
+    },
+    {
+      sourceCode: 'HYD',
+      destinationCode: 'BLR',
+      sourceName: 'Hyderabad',
+      destinationName: 'Banglore'
+    },
+    {
+      sourceCode: 'HYD',
+      destinationCode: 'IXC',
+      sourceName: 'Hyderabad',
+      destinationName: 'Chandigarh'
+    },
+    {
+      sourceCode: 'HYD',
+      destinationCode: 'MAA',
+      sourceName: 'Hyderabad',
+      destinationName: 'Chennai'
+    },
+
+    // // 4th set
+    {
+      sourceCode: 'IXC',
+      destinationCode: 'DEL',
+      sourceName: 'Chandigarh',
+      destinationName: 'Delhi'
+    },
+    {
+      sourceCode: 'IXC',
+      destinationCode: 'BOM',
+      sourceName: 'Chandigarh',
+      destinationName: 'Mumbai'
+    },
+    {
+      sourceCode: 'IXC',
+      destinationCode: 'BLR',
+      sourceName: 'Chandigarh',
+      destinationName: 'Banglore'
+    },
+    {
+      sourceCode: 'IXC',
+      destinationCode: 'HYD',
+      sourceName: 'Chandigarh',
+      destinationName: 'Hyderabad'
+    },
+    {
+      sourceCode: 'IXC',
+      destinationCode: 'MAA',
+      sourceName: 'Chandigarh',
+      destinationName: 'Chennai'
+    },
+
+    // 5th set 
+    {
+      sourceCode: 'MAA',
+      destinationCode: 'DEL',
+      sourceName: 'Chennai',
+      destinationName: 'New Delhi'
+    },
+    {
+      sourceCode: 'MAA',
+      destinationCode: 'BOM',
+      sourceName: 'Chennai',
+      destinationName: 'Mumbai'
+    },
+    {
+      sourceCode: 'MAA',
+      destinationCode: 'BLR',
+      sourceName: 'Chennai',
+      destinationName: 'Banglore'
+    },
+    {
+      sourceCode: 'MAA',
+      destinationCode: 'HYD',
+      sourceName: 'Chennai',
+      destinationName: 'Hyderabad'
+    },
+    {
+      sourceCode: 'MAA',
+      destinationCode: 'IXC',
+      sourceName: 'Chennai',
+      destinationName: 'Chandigarh'
+    }
+
   ]
 
     for(let i=0;i<pairOfOriginDestination.length;i++)
@@ -104,14 +269,17 @@ async function check(element,src,des){
             destinationCode: element.destinationCode,
             dateOfDeparture: Date.now(),
             slug:element.sourceName.toLowerCase()+'-'+element.destinationName.toLowerCase(),
-            details: detailArr
+            flightDetails: detailArr
           }
           let obj = await new flight(clubbed);
 
           let ans = await obj.save();
           if (!ans) {
             return response.statusCode;
-          } else { return response.statusCode; }
+          } else { 
+              console.log("data saved");
+              
+            return response.statusCode; }
 
         }
         else{
@@ -126,17 +294,17 @@ async function check(element,src,des){
 }
 
 
-// function sendMail() {
-//   console.log("come here to send mail");
-  
-//   let msg = {
-//     to:'sonia.dua@venturepact.com',
-//     from:'hacked@hack.com',
-//     subject:'Hacked',
-//     text: 'Your acoount has been hacked!'
-//   }
-//   sgMail.send(msg).then(()=>{
-//     console.log("kaam ho gya");
+function sendMail() {
+  console.log("come here to send mail");
+  let i =10;
+  let msg = {
+    to:'harsh.singh@venturepact.com',
+    from:'hacked@hack.com',
+    subject:'Hacked',
+    text: i>10 ? "Worked":"Didnot"
+  }
+  sgMail.send(msg).then(()=>{
+    console.log("kaam ho gya");
     
-//   })
-//   }
+  })
+  }
