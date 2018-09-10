@@ -12,14 +12,13 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "55 40 09 * * 0-6",
+  cronTime: "00 00 09 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
     // }
     crawl();
     // sendMail();
-
   },
   start: false,
   timeZone: "Asia/Kolkata"
@@ -73,7 +72,7 @@ async function crawl() {
       sourceCode: 'BOM',
       destinationCode: 'BLR',
       sourceName: 'Mumbai',
-      destinationName: 'Banglore'
+      destinationName: 'Bengaluru'
     },
     {
       sourceCode: 'BOM',
@@ -97,31 +96,31 @@ async function crawl() {
     {
       sourceCode: 'BLR',
       destinationCode: 'DEL',
-      sourceName: 'Bangalore',
+      sourceName: 'Bengaluru',
       destinationName: 'Delhi'
     },
     {
       sourceCode: 'BLR',
       destinationCode: 'BOM',
-      sourceName: 'Bangalore',
+      sourceName: 'Bengaluru',
       destinationName: 'Mumbai'
     },
     {
       sourceCode: 'BLR',
       destinationCode: 'HYD',
-      sourceName: 'Bangalore',
+      sourceName: 'Bengaluru',
       destinationName: 'Hyderabad'
     },
     {
       sourceCode: 'BLR',
       destinationCode: 'IXC',
-      sourceName: 'Bangalore',
+      sourceName: 'Bengaluru',
       destinationName: 'Chandigarh'
     },
     {
       sourceCode: 'BLR',
       destinationCode: 'MAA',
-      sourceName: 'Bangalore',
+      sourceName: 'Bengaluru',
       destinationName: 'Chennai'
     },
     // 3rd set 
@@ -141,7 +140,7 @@ async function crawl() {
       sourceCode: 'HYD',
       destinationCode: 'BLR',
       sourceName: 'Hyderabad',
-      destinationName: 'Banglore'
+      destinationName: 'Bengaluru'
     },
     {
       sourceCode: 'HYD',
@@ -173,7 +172,7 @@ async function crawl() {
       sourceCode: 'IXC',
       destinationCode: 'BLR',
       sourceName: 'Chandigarh',
-      destinationName: 'Banglore'
+      destinationName: 'Bengaluru'
     },
     {
       sourceCode: 'IXC',
@@ -205,7 +204,7 @@ async function crawl() {
       sourceCode: 'MAA',
       destinationCode: 'BLR',
       sourceName: 'Chennai',
-      destinationName: 'Banglore'
+      destinationName: 'Bengaluru'
     },
     {
       sourceCode: 'MAA',
@@ -234,8 +233,6 @@ async function crawl() {
   }
 }
 
-
-
 async function check(element,src,des){
   let date = moment().format('YYYYMMDD')
   var status = 502;
@@ -245,6 +242,7 @@ async function check(element,src,des){
         uri: ibiboApi
       }, async function (error, response, body) {
         // console.log('res codesss',response.statusCode)
+        try{
         if (!error && response.statusCode == 200) {
           body = JSON.parse(body);    
           status = 200
@@ -258,6 +256,7 @@ async function check(element,src,des){
               tax: el.fare.adulttax,
               totalFare: el.fare.adulttotalfare,
               depDate: new Date(),
+              // depDate:d,
               travelDuration: el.duration
             }
             detailArr.push(ob);
@@ -268,6 +267,7 @@ async function check(element,src,des){
             sourceCode: element.sourceCode,
             destinationCode: element.destinationCode,
             dateOfDeparture: Date.now(),
+            // dateOfDeparture:d,
             slug:element.sourceName.toLowerCase()+'-'+element.destinationName.toLowerCase(),
             flightDetails: detailArr
           }
@@ -290,18 +290,22 @@ async function check(element,src,des){
             status = 502
           } 
         }
+      } catch(err){
+        sendMail(err);
+      }
       })
 }
 
 
-function sendMail() {
+function sendMail(err) {
   console.log("come here to send mail");
   let i =10;
   let msg = {
-    to:'harsh.singh@venturepact.com',
-    from:'hacked@hack.com',
-    subject:'Hacked',
-    text: i>10 ? "Worked":"Didnot"
+    to:['harsh.singh@venturepact.com',
+        'shubham.latiyan@venturepact.com'],
+    from:'flightCrawler@error.com',
+    subject:'Some Exception occured!',
+    text:err
   }
   sgMail.send(msg).then(()=>{
     console.log("kaam ho gya");
@@ -309,3 +313,45 @@ function sendMail() {
   })
   }
 
+exports.getFlightDetails = async (req,res)=>{
+  
+  let fromDate = req.body.fromDate;
+  let toDate = req.body.toDate;
+  
+  let origin = req.body.origin;
+  let destination = req.body.destination;
+  fromDate = new Date(fromDate);
+  toDate = new Date(toDate)
+  if(toDate==''){
+    toDate = fromDate
+  }
+  toDate.setHours(23, 59, 59, 999);
+  fromDate.setHours(0,0,0,0);
+ 
+  let slug = origin+'-'+destination;
+  
+  slug = slug.toString();
+  console.log("slug",slug);
+  try{
+    let fetchedData;
+    if(toDate !=''){
+      fetchedData = await flight.find({slug:slug,
+        dateOfDeparture:{ $gt: fromDate},
+        dateOfDeparture:{ $lt: toDate}})
+        if(fetchedData){
+          res.json({
+            success:true,
+            data:fetchedData
+          })
+        }
+      }
+    
+  }catch(error){
+    console.log("error",error);
+    sendMail(error.toString())
+    res.json({
+      success:false,
+      msg:"Some esception occured!"
+    })
+  }
+}
