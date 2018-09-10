@@ -309,5 +309,3 @@ function sendMail() {
   })
   }
 
-
-  exports.
