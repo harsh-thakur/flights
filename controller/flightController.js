@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "00 00 09 * * 0-6",
+  cronTime: "20 34 17 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
@@ -268,7 +268,7 @@ async function check(element,src,des){
             destinationCode: element.destinationCode,
             dateOfDeparture: Date.now(),
             // dateOfDeparture:d,
-            slug:element.sourceName.toLowerCase()+'-'+element.destinationName.toLowerCase(),
+            slug:element.sourceCode.toLowerCase()+'-'+element.destinationCode.toLowerCase(),
             flightDetails: detailArr
           }
           let obj = await new flight(clubbed);
@@ -314,27 +314,37 @@ function sendMail(err) {
   }
 
 exports.getFlightDetails = async (req,res)=>{
+  console.log('bodyyyyyyyyyy', req.body);
   
-  let fromDate = req.body.fromDate;
+  let fromDate = req.body.originDate;
   let toDate = req.body.toDate;
+  
+fromDate = new Date(fromDate);
+  
   
   let origin = req.body.origin;
   let destination = req.body.destination;
+  origin = origin.toLowerCase();
+  destination = destination.toLowerCase();
   fromDate = new Date(fromDate);
   toDate = new Date(toDate)
-  if(toDate==''){
+  if(toDate=='' || toDate == null){
     toDate = fromDate
+  }else {
+    toDate =  new Date(fromDate);
   }
   toDate.setHours(23, 59, 59, 999);
   fromDate.setHours(0,0,0,0);
  
+  console.log(toDate,fromDate);
+  
   let slug = origin+'-'+destination;
   
   slug = slug.toString();
   console.log("slug",slug);
   try{
     let fetchedData;
-    if(toDate !=''){
+    
       fetchedData = await flight.find({slug:slug,
         dateOfDeparture:{ $gt: fromDate},
         dateOfDeparture:{ $lt: toDate}})
@@ -343,9 +353,7 @@ exports.getFlightDetails = async (req,res)=>{
             success:true,
             data:fetchedData
           })
-        }
       }
-    
   }catch(error){
     console.log("error",error);
     sendMail(error.toString())
