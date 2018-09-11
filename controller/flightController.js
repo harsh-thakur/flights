@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "20 34 17 * * 0-6",
+  cronTime: "10 16 12 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
@@ -255,7 +255,8 @@ async function check(element,src,des){
               fare: el.fare.adultbasefare,
               tax: el.fare.adulttax,
               totalFare: el.fare.adulttotalfare,
-              depDate: new Date(),
+              depDate: Date.now(),
+              depTime:el.deptime,
               // depDate:d,
               travelDuration: el.duration
             }
@@ -305,7 +306,7 @@ function sendMail(err) {
         'shubham.latiyan@venturepact.com'],
     from:'flightCrawler@error.com',
     subject:'Some Exception occured!',
-    text:err
+    text:err.toString()
   }
   sgMail.send(msg).then(()=>{
     console.log("kaam ho gya");
@@ -319,22 +320,22 @@ exports.getFlightDetails = async (req,res)=>{
   let fromDate = req.body.originDate;
   let toDate = req.body.toDate;
   
-fromDate = new Date(fromDate);
-  
-  
   let origin = req.body.origin;
   let destination = req.body.destination;
   origin = origin.toLowerCase();
   destination = destination.toLowerCase();
   fromDate = new Date(fromDate);
-  toDate = new Date(toDate)
+  console.log(fromDate);
+  
   if(toDate=='' || toDate == null){
     toDate = fromDate
   }else {
-    toDate =  new Date(fromDate);
+    toDate =  new Date(toDate)
   }
-  toDate.setHours(23, 59, 59, 999);
-  fromDate.setHours(0,0,0,0);
+  console.log("todate",toDate);
+  
+  toDate.setHours(28, 89, 59, 999);
+  fromDate.setHours(05,30,0,0);
  
   console.log(toDate,fromDate);
   

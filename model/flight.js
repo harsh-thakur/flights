@@ -19,6 +19,7 @@ var flightSchema = new mongoose.Schema({
             tax:String,
             totalFare:String,
             depDate:Date,
+            depTime:String,
             travelDuration:String
         }]
  }, { versionKey: false });
