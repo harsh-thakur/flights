@@ -12,7 +12,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
 var notifier = new CronJob({
-  cronTime: "10 16 12 * * 0-6",
+  cronTime: "40 24 16 * * 0-6",
   // cronTime: '1 * * * * *',
   onTick: async function () {
     // if (process.env.Is_Dev_Machine != 1) {
@@ -235,6 +235,9 @@ async function crawl() {
 
 async function check(element,src,des){
   let date = moment().format('YYYYMMDD')
+  // date = '20180912'
+  // let d = new Date()
+  // d.setDate(d.getDate()+1);
   var status = 502;
   let ibiboApi = `http://developer.goibibo.com/api/search/?app_id=f07bdf95&app_key=`+process.env.IBIBO_API_KEY+`&format=json&source=`+src+`&destination=`+des+`&dateofdeparture=`+date+`&seatingclass=E&adults=1&children=0&infants=0&counter=100`
      await request({
@@ -255,7 +258,7 @@ async function check(element,src,des){
               fare: el.fare.adultbasefare,
               tax: el.fare.adulttax,
               totalFare: el.fare.adulttotalfare,
-              depDate: Date.now(),
+              depDate: new Date(),
               depTime:el.deptime,
               // depDate:d,
               travelDuration: el.duration
@@ -267,7 +270,7 @@ async function check(element,src,des){
             destination: element.destinationName,
             sourceCode: element.sourceCode,
             destinationCode: element.destinationCode,
-            dateOfDeparture: Date.now(),
+            dateOfDeparture: new Date(),
             // dateOfDeparture:d,
             slug:element.sourceCode.toLowerCase()+'-'+element.destinationCode.toLowerCase(),
             flightDetails: detailArr
@@ -334,8 +337,8 @@ exports.getFlightDetails = async (req,res)=>{
   }
   console.log("todate",toDate);
   
-  toDate.setHours(28, 89, 59, 999);
-  fromDate.setHours(05,30,0,0);
+  toDate.setHours(23, 59, 59, 999);
+  fromDate.setHours(0,0,0,0);
  
   console.log(toDate,fromDate);
   
@@ -346,9 +349,28 @@ exports.getFlightDetails = async (req,res)=>{
   try{
     let fetchedData;
     
-      fetchedData = await flight.find({slug:slug,
-        dateOfDeparture:{ $gt: fromDate},
-        dateOfDeparture:{ $lt: toDate}})
+      fetchedData = await flight.aggregate([{
+          $match:{
+            $and: [
+              {slug:slug},
+              {
+              dateOfDeparture: {
+                $gt: fromDate
+              }
+            },
+            {
+              dateOfDeparture: {
+                $lt: toDate
+              }
+            }
+          ]
+          }
+        },
+        {
+          $unwind:'$flightDetails'
+        }])
+      console.log("console kar lo",fetchedData.length);
+      
         if(fetchedData){
           res.json({
             success:true,
