@@ -129,7 +129,7 @@ async function crawl() {
       destinationCode: 'DEL',
       sourceName: 'Hyderabad',
       destinationName: 'Delhi'
-    },   
+    },
     {
       sourceCode: 'HYD',
       destinationCode: 'BOM',
@@ -221,168 +221,165 @@ async function crawl() {
 
   ]
 
-    for(let i=0;i<pairOfOriginDestination.length;i++)
-    {
-  
-      let element = pairOfOriginDestination[i];
-     
-    check(element,element.sourceCode,element.destinationCode)
-    .then(data=>{
-      console.log(data); 
-    });
+  for (let i = 0; i < pairOfOriginDestination.length; i++) {
+
+    let element = pairOfOriginDestination[i];
+
+    check(element, element.sourceCode, element.destinationCode)
+      .then(data => {
+        console.log(data);
+      });
   }
 }
 
-async function check(element,src,des){
+async function check(element, src, des) {
   let date = moment().format('YYYYMMDD')
   // date = '20180912'
   // let d = new Date()
   // d.setDate(d.getDate()+1);
   var status = 502;
-  let ibiboApi = `http://developer.goibibo.com/api/search/?app_id=f07bdf95&app_key=`+process.env.IBIBO_API_KEY+`&format=json&source=`+src+`&destination=`+des+`&dateofdeparture=`+date+`&seatingclass=E&adults=1&children=0&infants=0&counter=100`
-     await request({
-        method: 'GET',
-        uri: ibiboApi
-      }, async function (error, response, body) {
-        // console.log('res codesss',response.statusCode)
-        try{
-        if (!error && response.statusCode == 200) {
-          body = JSON.parse(body);    
-          status = 200
-          let ibiboData = body.data.onwardflights;
-          let detailArr = [];
-          await ibiboData.forEach(async function (el) {
-            let ob = {
-              airline_name: el.airline,
-              flight_code: el.carrierid,
-              fare: el.fare.adultbasefare,
-              tax: el.fare.adulttax,
-              totalFare: el.fare.adulttotalfare,
-              depDate: new Date(),
-              depTime:el.deptime,
-              // depDate:d,
-              travelDuration: el.duration
-            }
-            detailArr.push(ob);
-          })
-          let clubbed = {
-            source: element.sourceName,
-            destination: element.destinationName,
-            sourceCode: element.sourceCode,
-            destinationCode: element.destinationCode,
-            dateOfDeparture: new Date(),
-            // dateOfDeparture:d,
-            slug:element.sourceCode.toLowerCase()+'-'+element.destinationCode.toLowerCase(),
-            flightDetails: detailArr
+  let ibiboApi = `http://developer.goibibo.com/api/search/?app_id=f07bdf95&app_key=` + process.env.IBIBO_API_KEY + `&format=json&source=` + src + `&destination=` + des + `&dateofdeparture=` + date + `&seatingclass=E&adults=1&children=0&infants=0&counter=100`
+  await request({
+    method: 'GET',
+    uri: ibiboApi
+  }, async function (error, response, body) {
+    // console.log('res codesss',response.statusCode)
+    try {
+      if (!error && response.statusCode == 200) {
+        body = JSON.parse(body);
+        status = 200
+        let ibiboData = body.data.onwardflights;
+        let detailArr = [];
+        await ibiboData.forEach(async function (el) {
+          let ob = {
+            airline_name: el.airline,
+            flight_code: el.carrierid,
+            fare: el.fare.adultbasefare,
+            tax: el.fare.adulttax,
+            totalFare: el.fare.adulttotalfare,
+            depDate: new Date(),
+            depTime: el.deptime,
+            // depDate:d,
+            travelDuration: el.duration
           }
-          let obj = await new flight(clubbed);
-
-          let ans = await obj.save();
-          if (!ans) {
-            return response.statusCode;
-          } else { 
-              console.log("data saved");
-              
-            return response.statusCode; }
-
+          detailArr.push(ob);
+        })
+        let clubbed = {
+          source: element.sourceName,
+          destination: element.destinationName,
+          sourceCode: element.sourceCode,
+          destinationCode: element.destinationCode,
+          dateOfDeparture: new Date(),
+          // dateOfDeparture:d,
+          slug: element.sourceCode.toLowerCase() + '-' + element.destinationCode.toLowerCase(),
+          flightDetails: detailArr
         }
-        else{
-          recC++;   
-          if(status!=200)
-           { check(element,src,des);  }
-          else{
-            status = 502
-          } 
+        let obj = await new flight(clubbed);
+
+        let ans = await obj.save();
+        if (!ans) {
+          return response.statusCode;
+        } else {
+          console.log("data saved");
+
+          return response.statusCode;
         }
-      } catch(err){
-        sendMail(err);
+
       }
-      })
+      else {
+        recC++;
+        if (status != 200) { check(element, src, des); }
+        else {
+          status = 502
+        }
+      }
+    } catch (err) {
+      sendMail(err);
+    }
+  })
 }
 
 
 function sendMail(err) {
   console.log("come here to send mail");
-  let i =10;
+  let i = 10;
   let msg = {
-    to:['harsh.singh@venturepact.com',
-        'shubham.latiyan@venturepact.com'],
-    from:'flightCrawler@error.com',
-    subject:'Some Exception occured!',
-    text:err.toString()
+    to: ['harsh.singh@venturepact.com',
+      'shubham.latiyan@venturepact.com'],
+    from: 'flightCrawler@error.com',
+    subject: 'Some Exception occured!',
+    text: err.toString()
   }
-  sgMail.send(msg).then(()=>{
+  sgMail.send(msg).then(() => {
     console.log("kaam ho gya");
-    
-  })
-  }
 
-exports.getFlightDetails = async (req,res)=>{
+  })
+}
+
+exports.getFlightDetails = async (req, res) => {
   console.log('bodyyyyyyyyyy', req.body);
-  
+
   let fromDate = req.body.originDate;
   let toDate = req.body.toDate;
-  
+
   let origin = req.body.origin;
   let destination = req.body.destination;
   origin = origin.toLowerCase();
   destination = destination.toLowerCase();
   fromDate = new Date(fromDate);
   console.log(fromDate);
-  
-  if(toDate=='' || toDate == null){
+
+  if (toDate == '' || toDate == null) {
     toDate = fromDate
-  }else {
-    toDate =  new Date(toDate)
+  } else {
+    toDate = new Date(toDate)
   }
-  console.log("todate",toDate);
-  
+  console.log("todate", toDate);
+
   toDate.setHours(23, 59, 59, 999);
-  fromDate.setHours(0,0,0,0);
- 
-  console.log(toDate,fromDate);
-  
-  let slug = origin+'-'+destination;
-  
+  fromDate.setHours(0, 0, 0, 0);
+
+  console.log(toDate, fromDate);
+
+  let slug = origin + '-' + destination;
+
   slug = slug.toString();
-  console.log("slug",slug);
-  try{
+  console.log("slug", slug);
+  try {
     let fetchedData;
-    
-      fetchedData = await flight.aggregate([{
-          $match:{
-            $and: [
-              {slug:slug},
-              {
-              dateOfDeparture: {
-                $gt: fromDate
-              }
-            },
-            {
-              dateOfDeparture: {
-                $lt: toDate
-              }
+
+    fetchedData = await flight.aggregate([{
+      $match: {
+        $and: [{ slug: slug },
+          {
+            dateOfDeparture: {
+              $gt: fromDate
             }
-          ]
-          }
-        },
-        {
-          $unwind:'$flightDetails'
-        }])
-      console.log("console kar lo",fetchedData.length);
-      
-        if(fetchedData){
-          res.json({
-            success:true,
-            data:fetchedData
-          })
+          },
+          {
+            dateOfDeparture: {
+              $lt: toDate
+            }
+          }]
       }
-  }catch(error){
-    console.log("error",error);
+    },
+    {
+      $unwind: '$flightDetails'
+    }])
+    console.log("console kar lo", fetchedData.length);
+
+    if (fetchedData) {
+      res.json({
+        success: true,
+        data: fetchedData
+      })
+    }
+  } catch (error) {
+    console.log("error", error);
     sendMail(error.toString())
     res.json({
-      success:false,
-      msg:"Some esception occured!"
+      success: false,
+      msg: "Some esception occured!"
     })
   }
 }
