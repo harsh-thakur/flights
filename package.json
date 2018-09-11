@@ -1,5 +1,5 @@
 {
-  "name": "flightcrawler-be",
+  "name": "flights",
   "version": "1.0.0",
   "description": "A crawler which will crawl multiple travel websites and store data of flights, fare information and breakup of fare. Crawler should on click of a button go to predefined sites and search for flight information for predefined destinations and Store data in the format provided.",
   "main": "index.js",
