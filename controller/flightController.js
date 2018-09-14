@@ -11,14 +11,19 @@ sgMail.setApiKey(process.env.SENDGRID_API);
 sgMail.setSubstitutionWrappers("{{", "}}");
 
 let recC = 0;
+
 var notifier = new CronJob({
-  cronTime: "00 35 09 * * 0-6",
-  // cronTime: '1 * * * * *',
+  cronTime: "00 09 17 * * 0-6",
   onTick: async function () {
-    // if (process.env.Is_Dev_Machine != 1) {
-    // }
-    crawl();
-    // sendMail();
+    // let date = moment().format('YYYYMMDD')
+  for(let i=0; i<30;i++){
+      setTimeout(()=>{
+        let date = moment().add(i,'days').format('YYYYMMDD')
+        crawl(date);
+        console.log('dateee', date);
+        
+      },120000*(i+1));
+    }
   },
   start: false,
   timeZone: "Asia/Kolkata"
@@ -26,9 +31,8 @@ var notifier = new CronJob({
 notifier.start();
 
 
-
-async function crawl() {
-  console.log("heloo cron activated");
+async function crawl(date) {
+  console.log("heloo cron activated", date);
   let pairOfOriginDestination = [
     {
       sourceCode: 'DEL',
@@ -225,25 +229,22 @@ async function crawl() {
 
     let element = pairOfOriginDestination[i];
 
-    check(element, element.sourceCode, element.destinationCode)
+    check(element, element.sourceCode, element.destinationCode, date)
       .then(data => {
-        console.log(data);
+        // console.log(data);
       });
   }
 }
 
-async function check(element, src, des) {
-  let date = moment().format('YYYYMMDD')
-  // date = '20180912'
-  // let d = new Date()
-  // d.setDate(d.getDate()+1);
+async function check(element, src, des, date) {
+  
   var status = 502;
   let ibiboApi = `http://developer.goibibo.com/api/search/?app_id=f07bdf95&app_key=` + process.env.IBIBO_API_KEY + `&format=json&source=` + src + `&destination=` + des + `&dateofdeparture=` + date + `&seatingclass=E&adults=1&children=0&infants=0&counter=100`
   await request({
     method: 'GET',
-    uri: ibiboApi
+    uri: ibiboApi,
   }, async function (error, response, body) {
-    // console.log('res codesss',response.statusCode)
+    console.log('res codesss',response.statusCode)
     try {
       if (!error && response.statusCode == 200) {
         body = JSON.parse(body);
@@ -257,20 +258,22 @@ async function check(element, src, des) {
             fare: el.fare.adultbasefare,
             tax: el.fare.adulttax,
             totalFare: el.fare.adulttotalfare,
-            depDate: new Date(),
+            depDate: el.depdate,
             depTime: el.deptime,
-            // depDate:d,
             travelDuration: el.duration
           }
           detailArr.push(ob);
         })
+        let dateSet = (new Date()).setDate((date).slice(6));
+        let monthSet = new Date(dateSet).setMonth((date).slice(4,6)-1);
+        let setYear = new Date(monthSet).setYear((date).slice(0,4));
+
         let clubbed = {
           source: element.sourceName,
           destination: element.destinationName,
           sourceCode: element.sourceCode,
           destinationCode: element.destinationCode,
-          dateOfDeparture: new Date(),
-          // dateOfDeparture:d,
+          dateOfDeparture: new Date(setYear),
           slug: element.sourceCode.toLowerCase() + '-' + element.destinationCode.toLowerCase(),
           flightDetails: detailArr
         }
@@ -281,14 +284,13 @@ async function check(element, src, des) {
           return response.statusCode;
         } else {
           console.log("data saved");
-
           return response.statusCode;
         }
 
       }
       else {
         recC++;
-        if (status != 200) { check(element, src, des); }
+        if (status != 200) { check(element, src, des, date); }
         else {
           status = 502
         }

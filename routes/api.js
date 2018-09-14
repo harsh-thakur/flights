@@ -8,5 +8,5 @@ router.get('/', function (req, res) {
     });
 });
 
-router.post('/getFlightDetails', flightController.getFlightDetails);
+// router.post('/getFlightDetails', flightController.getFlightDetails);
 module.exports = router;

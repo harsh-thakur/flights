@@ -6,23 +6,23 @@ Promise.promisifyAll(mongoose);
 var mongoose = require('mongoose');
 
 var flightSchema = new mongoose.Schema({
-        source:String,
-        destination:String,
-        sourceCode:String,
-        destinationCode: String,
-        dateOfDeparture:Date,
-        slug:String,
-        flightDetails :[{
-           airline_name:String,
-            flight_code:String,
-            fare:String,
-            tax:String,
-            totalFare:String,
-            depDate:Date,
-            depTime:String,
-            travelDuration:String
-        }]
- }, { versionKey: false });
+    source: String,
+    destination: String,
+    sourceCode: String,
+    destinationCode: String,
+    dateOfDeparture: Date,
+    slug: String,
+    flightDetails: [{
+        airline_name: String,
+        flight_code: String,
+        fare: String,
+        tax: String,
+        totalFare: String,
+        depDate: String,
+        depTime: String,
+        travelDuration: String
+    }]
+}, { versionKey: false });
 
-var flight = mongoose.model('flightibibo', flightSchema);
+var flight = mongoose.model('flight', flightSchema);
 module.exports = flight;
