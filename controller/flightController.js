@@ -13,7 +13,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 let recC = 0;
 
 var notifier = new CronJob({
-  cronTime: "00 09 17 * * 0-6",
+  cronTime: "00 01 09 * * 0-6",
   onTick: async function () {
     // let date = moment().format('YYYYMMDD')
   for(let i=0; i<30;i++){
