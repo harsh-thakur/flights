@@ -325,6 +325,7 @@ exports.getFlightDetails = async (req, res) => {
   let fromDate = req.body.fromDate;
   let toDate = req.body.toDate;
   let created_on = req.body.created_on;
+  let created_till = req.body.created_till;
   let origin = req.body.origin;
   let destination = req.body.destination;
   origin = origin.toLowerCase();
@@ -333,10 +334,16 @@ exports.getFlightDetails = async (req, res) => {
   created_on = new Date(created_on)
 
   let created_on_from = created_on.setHours(0,0,0,0);
-  let created_on_to = created_on.setHours(23,59,59,999);
-
   created_on_from = new Date(created_on_from);
-  created_on_to = new Date(created_on_to);
+  let created_on_to;
+  if(created_till=='' || created_till == null) {
+    created_on_to = created_on.setHours(23,59,59,999);
+    created_on_to = new Date(created_on_to);
+  }else{
+    created_till = new Date(created_till)
+    created_on_to = created_till.setHours(23,59,59,999);
+    created_on_to = new Date(created_on_to);
+  }
   console.log("created_on_from,created_on_to",created_on_from,created_on_to);
 
   if (toDate == '' || toDate == null) {
