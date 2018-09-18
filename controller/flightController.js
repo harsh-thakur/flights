@@ -322,15 +322,22 @@ function sendMail(err) {
 exports.getFlightDetails = async (req, res) => {
   console.log('bodyyyyyyyyyy', req.body);
 
-  let fromDate = req.body.originDate;
+  let fromDate = req.body.fromDate;
   let toDate = req.body.toDate;
-
+  let created_on = req.body.created_on;
   let origin = req.body.origin;
   let destination = req.body.destination;
   origin = origin.toLowerCase();
   destination = destination.toLowerCase();
   fromDate = new Date(fromDate);
-  console.log(fromDate);
+  created_on = new Date(created_on)
+
+  let created_on_from = created_on.setHours(0,0,0,0);
+  let created_on_to = created_on.setHours(23,59,59,999);
+
+  created_on_from = new Date(created_on_from);
+  created_on_to = new Date(created_on_to);
+  console.log("created_on_from,created_on_to",created_on_from,created_on_to);
 
   if (toDate == '' || toDate == null) {
     toDate = fromDate
@@ -352,7 +359,7 @@ exports.getFlightDetails = async (req, res) => {
   console.log("slug", slug);
   try {
     let fetchedData;
-
+    console.log(await flight.count())
     fetchedData = await flight.aggregate([{
       $match: {
         $and: [{ slug: slug },
@@ -364,6 +371,16 @@ exports.getFlightDetails = async (req, res) => {
           {
             dateOfDeparture: {
               $lte: toDate
+            }
+          },
+          {
+            created_on: {
+              $gte: created_on_from
+            }
+          },
+          {
+            created_on: {
+              $lte: created_on_to
             }
           }]
       }
