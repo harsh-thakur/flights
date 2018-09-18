@@ -10,6 +10,7 @@ var flightSchema = new mongoose.Schema({
     destination: String,
     sourceCode: String,
     destinationCode: String,
+    created_on: Date,
     dateOfDeparture: Date,
     slug: String,
     flightDetails: [{
@@ -24,5 +25,5 @@ var flightSchema = new mongoose.Schema({
     }]
 }, { versionKey: false });
 
-var flight = mongoose.model('flight', flightSchema);
+var flight = mongoose.model('flightsNew', flightSchema);
 module.exports = flight;

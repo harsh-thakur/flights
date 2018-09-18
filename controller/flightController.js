@@ -13,7 +13,7 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 let recC = 0;
 
 var notifier = new CronJob({
-  cronTime: "00 01 09 * * 0-6",
+  cronTime: "00 06 14 * * 0-6",
   onTick: async function () {
     // let date = moment().format('YYYYMMDD')
   for(let i=0; i<30;i++){
@@ -22,7 +22,7 @@ var notifier = new CronJob({
         crawl(date);
         console.log('dateee', date);
         
-      },120000*(i+1));
+      },20000*(i+1));
     }
   },
   start: false,
@@ -52,176 +52,176 @@ async function crawl(date) {
       sourceName: 'New Delhi',
       destinationName: 'Hyderabad'
     },
-    {
-      sourceCode: 'DEL',
-      destinationCode: 'IXC',
-      sourceName: 'New Delhi',
-      destinationName: 'Chandigarh'
-    },
-    {
-      sourceCode: 'DEL',
-      destinationCode: 'MAA',
-      sourceName: 'New Delhi',
-      destinationName: 'Chennai'
-    },
+    // {
+    //   sourceCode: 'DEL',
+    //   destinationCode: 'IXC',
+    //   sourceName: 'New Delhi',
+    //   destinationName: 'Chandigarh'
+    // },
+    // {
+    //   sourceCode: 'DEL',
+    //   destinationCode: 'MAA',
+    //   sourceName: 'New Delhi',
+    //   destinationName: 'Chennai'
+    // },
 
-    // 1st set
-    {
-      sourceCode: 'BOM',
-      destinationCode: 'DEL',
-      sourceName: 'Mumbai',
-      destinationName: 'New Delhi'
-    },
-    {
-      sourceCode: 'BOM',
-      destinationCode: 'BLR',
-      sourceName: 'Mumbai',
-      destinationName: 'Bengaluru'
-    },
-    {
-      sourceCode: 'BOM',
-      destinationCode: 'HYD',
-      sourceName: 'Mumbai',
-      destinationName: 'Hyderabad'
-    },
-    {
-      sourceCode: 'BOM',
-      destinationCode: 'IXC',
-      sourceName: 'Mumbai',
-      destinationName: 'Chandigarh'
-    },
-    {
-      sourceCode: 'BOM',
-      destinationCode: 'MAA',
-      sourceName: 'Mumbai',
-      destinationName: 'Chennai'
-    },
-    // 2nd set 
-    {
-      sourceCode: 'BLR',
-      destinationCode: 'DEL',
-      sourceName: 'Bengaluru',
-      destinationName: 'Delhi'
-    },
-    {
-      sourceCode: 'BLR',
-      destinationCode: 'BOM',
-      sourceName: 'Bengaluru',
-      destinationName: 'Mumbai'
-    },
-    {
-      sourceCode: 'BLR',
-      destinationCode: 'HYD',
-      sourceName: 'Bengaluru',
-      destinationName: 'Hyderabad'
-    },
-    {
-      sourceCode: 'BLR',
-      destinationCode: 'IXC',
-      sourceName: 'Bengaluru',
-      destinationName: 'Chandigarh'
-    },
-    {
-      sourceCode: 'BLR',
-      destinationCode: 'MAA',
-      sourceName: 'Bengaluru',
-      destinationName: 'Chennai'
-    },
-    // 3rd set 
-    {
-      sourceCode: 'HYD',
-      destinationCode: 'DEL',
-      sourceName: 'Hyderabad',
-      destinationName: 'Delhi'
-    },
-    {
-      sourceCode: 'HYD',
-      destinationCode: 'BOM',
-      sourceName: 'Hyderabad',
-      destinationName: 'Mumbai'
-    },
-    {
-      sourceCode: 'HYD',
-      destinationCode: 'BLR',
-      sourceName: 'Hyderabad',
-      destinationName: 'Bengaluru'
-    },
-    {
-      sourceCode: 'HYD',
-      destinationCode: 'IXC',
-      sourceName: 'Hyderabad',
-      destinationName: 'Chandigarh'
-    },
-    {
-      sourceCode: 'HYD',
-      destinationCode: 'MAA',
-      sourceName: 'Hyderabad',
-      destinationName: 'Chennai'
-    },
+    // // 1st set
+    // {
+    //   sourceCode: 'BOM',
+    //   destinationCode: 'DEL',
+    //   sourceName: 'Mumbai',
+    //   destinationName: 'New Delhi'
+    // },
+    // {
+    //   sourceCode: 'BOM',
+    //   destinationCode: 'BLR',
+    //   sourceName: 'Mumbai',
+    //   destinationName: 'Bengaluru'
+    // },
+    // {
+    //   sourceCode: 'BOM',
+    //   destinationCode: 'HYD',
+    //   sourceName: 'Mumbai',
+    //   destinationName: 'Hyderabad'
+    // },
+    // {
+    //   sourceCode: 'BOM',
+    //   destinationCode: 'IXC',
+    //   sourceName: 'Mumbai',
+    //   destinationName: 'Chandigarh'
+    // },
+    // {
+    //   sourceCode: 'BOM',
+    //   destinationCode: 'MAA',
+    //   sourceName: 'Mumbai',
+    //   destinationName: 'Chennai'
+    // },
+    // // 2nd set 
+    // {
+    //   sourceCode: 'BLR',
+    //   destinationCode: 'DEL',
+    //   sourceName: 'Bengaluru',
+    //   destinationName: 'Delhi'
+    // },
+    // {
+    //   sourceCode: 'BLR',
+    //   destinationCode: 'BOM',
+    //   sourceName: 'Bengaluru',
+    //   destinationName: 'Mumbai'
+    // },
+    // {
+    //   sourceCode: 'BLR',
+    //   destinationCode: 'HYD',
+    //   sourceName: 'Bengaluru',
+    //   destinationName: 'Hyderabad'
+    // },
+    // {
+    //   sourceCode: 'BLR',
+    //   destinationCode: 'IXC',
+    //   sourceName: 'Bengaluru',
+    //   destinationName: 'Chandigarh'
+    // },
+    // {
+    //   sourceCode: 'BLR',
+    //   destinationCode: 'MAA',
+    //   sourceName: 'Bengaluru',
+    //   destinationName: 'Chennai'
+    // },
+    // // 3rd set 
+    // {
+    //   sourceCode: 'HYD',
+    //   destinationCode: 'DEL',
+    //   sourceName: 'Hyderabad',
+    //   destinationName: 'Delhi'
+    // },
+    // {
+    //   sourceCode: 'HYD',
+    //   destinationCode: 'BOM',
+    //   sourceName: 'Hyderabad',
+    //   destinationName: 'Mumbai'
+    // },
+    // {
+    //   sourceCode: 'HYD',
+    //   destinationCode: 'BLR',
+    //   sourceName: 'Hyderabad',
+    //   destinationName: 'Bengaluru'
+    // },
+    // {
+    //   sourceCode: 'HYD',
+    //   destinationCode: 'IXC',
+    //   sourceName: 'Hyderabad',
+    //   destinationName: 'Chandigarh'
+    // },
+    // {
+    //   sourceCode: 'HYD',
+    //   destinationCode: 'MAA',
+    //   sourceName: 'Hyderabad',
+    //   destinationName: 'Chennai'
+    // },
 
-    // // 4th set
-    {
-      sourceCode: 'IXC',
-      destinationCode: 'DEL',
-      sourceName: 'Chandigarh',
-      destinationName: 'Delhi'
-    },
-    {
-      sourceCode: 'IXC',
-      destinationCode: 'BOM',
-      sourceName: 'Chandigarh',
-      destinationName: 'Mumbai'
-    },
-    {
-      sourceCode: 'IXC',
-      destinationCode: 'BLR',
-      sourceName: 'Chandigarh',
-      destinationName: 'Bengaluru'
-    },
-    {
-      sourceCode: 'IXC',
-      destinationCode: 'HYD',
-      sourceName: 'Chandigarh',
-      destinationName: 'Hyderabad'
-    },
-    {
-      sourceCode: 'IXC',
-      destinationCode: 'MAA',
-      sourceName: 'Chandigarh',
-      destinationName: 'Chennai'
-    },
+    // // // 4th set
+    // {
+    //   sourceCode: 'IXC',
+    //   destinationCode: 'DEL',
+    //   sourceName: 'Chandigarh',
+    //   destinationName: 'Delhi'
+    // },
+    // {
+    //   sourceCode: 'IXC',
+    //   destinationCode: 'BOM',
+    //   sourceName: 'Chandigarh',
+    //   destinationName: 'Mumbai'
+    // },
+    // {
+    //   sourceCode: 'IXC',
+    //   destinationCode: 'BLR',
+    //   sourceName: 'Chandigarh',
+    //   destinationName: 'Bengaluru'
+    // },
+    // {
+    //   sourceCode: 'IXC',
+    //   destinationCode: 'HYD',
+    //   sourceName: 'Chandigarh',
+    //   destinationName: 'Hyderabad'
+    // },
+    // {
+    //   sourceCode: 'IXC',
+    //   destinationCode: 'MAA',
+    //   sourceName: 'Chandigarh',
+    //   destinationName: 'Chennai'
+    // },
 
-    // 5th set 
-    {
-      sourceCode: 'MAA',
-      destinationCode: 'DEL',
-      sourceName: 'Chennai',
-      destinationName: 'New Delhi'
-    },
-    {
-      sourceCode: 'MAA',
-      destinationCode: 'BOM',
-      sourceName: 'Chennai',
-      destinationName: 'Mumbai'
-    },
-    {
-      sourceCode: 'MAA',
-      destinationCode: 'BLR',
-      sourceName: 'Chennai',
-      destinationName: 'Bengaluru'
-    },
-    {
-      sourceCode: 'MAA',
-      destinationCode: 'HYD',
-      sourceName: 'Chennai',
-      destinationName: 'Hyderabad'
-    },
-    {
-      sourceCode: 'MAA',
-      destinationCode: 'IXC',
-      sourceName: 'Chennai',
-      destinationName: 'Chandigarh'
-    }
+    // // 5th set 
+    // {
+    //   sourceCode: 'MAA',
+    //   destinationCode: 'DEL',
+    //   sourceName: 'Chennai',
+    //   destinationName: 'New Delhi'
+    // },
+    // {
+    //   sourceCode: 'MAA',
+    //   destinationCode: 'BOM',
+    //   sourceName: 'Chennai',
+    //   destinationName: 'Mumbai'
+    // },
+    // {
+    //   sourceCode: 'MAA',
+    //   destinationCode: 'BLR',
+    //   sourceName: 'Chennai',
+    //   destinationName: 'Bengaluru'
+    // },
+    // {
+    //   sourceCode: 'MAA',
+    //   destinationCode: 'HYD',
+    //   sourceName: 'Chennai',
+    //   destinationName: 'Hyderabad'
+    // },
+    // {
+    //   sourceCode: 'MAA',
+    //   destinationCode: 'IXC',
+    //   sourceName: 'Chennai',
+    //   destinationName: 'Chandigarh'
+    // }
 
   ]
 
@@ -272,6 +272,7 @@ async function check(element, src, des, date) {
           source: element.sourceName,
           destination: element.destinationName,
           sourceCode: element.sourceCode,
+          created_on: Date.now(),
           destinationCode: element.destinationCode,
           dateOfDeparture: new Date(setYear),
           slug: element.sourceCode.toLowerCase() + '-' + element.destinationCode.toLowerCase(),
