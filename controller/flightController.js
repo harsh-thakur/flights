@@ -338,9 +338,11 @@ exports.getFlightDetails = async (req, res) => {
   }
   console.log("todate", toDate);
 
-  toDate.setHours(23, 59, 59, 999);
-  fromDate.setHours(0, 0, 0, 0);
+  toDate=toDate.setHours(23, 59, 59, 999);
 
+  fromDate=fromDate.setHours(0, 0, 0, 0);
+ fromDate = new Date(fromDate)
+ toDate = new  Date(toDate)
   console.log(toDate, fromDate);
 
   let slug = origin + '-' + destination;
@@ -355,18 +357,23 @@ exports.getFlightDetails = async (req, res) => {
         $and: [{ slug: slug },
           {
             dateOfDeparture: {
-              $gt: fromDate
+              $gte: fromDate
             }
           },
           {
             dateOfDeparture: {
-              $lt: toDate
+              $lte: toDate
             }
           }]
       }
     },
     {
       $unwind: '$flightDetails'
+    },
+    {
+      $sort: {
+        dateOfDeparture: 1
+      }
     }])
     console.log("console kar lo", fetchedData.length);
 
