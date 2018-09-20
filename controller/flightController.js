@@ -322,15 +322,15 @@ function sendMail(err) {
 exports.getFlightDetails = async (req, res) => {
   console.log('bodyyyyyyyyyy', req.body);
 
-  let fromDate = req.body.fromDate;
-  let toDate = req.body.toDate;
+  // let fromDate = req.body.fromDate;
+  // let toDate = req.body.toDate;
   let created_on = req.body.created_on;
   let created_till = req.body.created_till;
   let origin = req.body.origin;
   let destination = req.body.destination;
   origin = origin.toLowerCase();
   destination = destination.toLowerCase();
-  fromDate = new Date(fromDate);
+  // fromDate = new Date(fromDate);
   created_on = new Date(created_on)
 
   let created_on_from = created_on.setHours(0,0,0,0);
@@ -344,21 +344,21 @@ exports.getFlightDetails = async (req, res) => {
     created_on_to = created_till.setHours(23,59,59,999);
     created_on_to = new Date(created_on_to);
   }
-  console.log("created_on_from,created_on_to",created_on_from,created_on_to);
+  // console.log("created_on_from,created_on_to",created_on_from,created_on_to);
 
-  if (toDate == '' || toDate == null) {
-    toDate = fromDate
-  } else {
-    toDate = new Date(toDate)
-  }
-  console.log("todate", toDate);
+  // if (toDate == '' || toDate == null) {
+  //   toDate = fromDate
+  // } else {
+  //   toDate = new Date(toDate)
+  // }
+  // console.log("todate", toDate);
 
-  toDate=toDate.setHours(23, 59, 59, 999);
+  // toDate=toDate.setHours(23, 59, 59, 999);
 
-  fromDate=fromDate.setHours(0, 0, 0, 0);
- fromDate = new Date(fromDate)
- toDate = new  Date(toDate)
-  console.log(toDate, fromDate);
+//   fromDate=fromDate.setHours(0, 0, 0, 0);
+//  fromDate = new Date(fromDate)
+//  toDate = new  Date(toDate)
+//   console.log(toDate, fromDate);
 
   let slug = origin + '-' + destination;
 
@@ -370,16 +370,16 @@ exports.getFlightDetails = async (req, res) => {
     fetchedData = await flight.aggregate([{
       $match: {
         $and: [{ slug: slug },
-          {
-            dateOfDeparture: {
-              $gte: fromDate
-            }
-          },
-          {
-            dateOfDeparture: {
-              $lte: toDate
-            }
-          },
+          // {
+          //   dateOfDeparture: {
+          //     $gte: fromDate
+          //   }
+          // },
+          // {
+          //   dateOfDeparture: {
+          //     $lte: toDate
+          //   }
+          // },
           {
             created_on: {
               $gte: created_on_from
@@ -397,7 +397,7 @@ exports.getFlightDetails = async (req, res) => {
     },
     {
       $sort: {
-        dateOfDeparture: 1
+        created_on: 1
       }
     }])
     console.log("console kar lo", fetchedData.length);
